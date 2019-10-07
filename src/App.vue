@@ -22,7 +22,8 @@
             type="text" 
             class="form-control" 
             id="taskForm" 
-            placeholder="Task" 
+            placeholder="task"
+            maxlength="20" 
             required>
         </div>
       </div>
@@ -34,13 +35,14 @@
         Add task
       </button>  
     </form>
-    <div>
+    <div class="w-50 mx-auto">
       <div 
         v-for="(value, index) in arrTasks"
         :key="index"
       >
         <TaskBlock 
           :messageTask="value.messageTask"
+          :numberTask="value.numberTask"
         />
       </div>
     </div>    
@@ -59,12 +61,25 @@ export default {
   data() {
     return {
       taskFormRef: null,
-      arrTasks: []
+      arrTasks: [],
+      messageTaskFromChild: '',
+      numberTask: undefined
     }
   },
   
   mounted() {
     this.taskFormRef = document.querySelector('#taskForm');
+    this.$on('clickBtnForParent', obj => {
+      this.messageTaskFromChild = obj.messageTask;
+      if(obj.btnClick == 'change') {
+       
+        return; 
+      }
+      this.arrTasks.forEach((item, index, arr) => {
+        console.log(item);
+        if(item[numberTask] == obj[numberTask]) arr.splice(index+1,1);
+      });
+    });
   },  
   
   methods: {
@@ -72,6 +87,8 @@ export default {
       if(this.taskFormRef.value) {
         this.arrTasks.push({});
         this.arrTasks[this.arrTasks.length - 1].messageTask = this.taskFormRef.value;
+        this.arrTasks[this.arrTasks.length - 1].numberTask = this.arrTasks.length - 1;
+        //console.log(this.arrTasks[this.arrTasks.length - 1].numberTask);
         this.taskFormRef.value = '';  
       }
     }
@@ -91,7 +108,6 @@ export default {
 
   #app
     text-align: center
-    border: 1px solid red
 
   h1
     color: white
