@@ -1,13 +1,29 @@
 <template>
-  <div id="app">
-    <!-- <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <h1 class="mt-3 mb-3">ToDoList</h1>
+  <div 
+    id="app"
+  >
+    <img 
+      alt="Vue logo" 
+      src="./assets/logo.png"
+    >
+    <h1 
+      class="mt-3 mb-3"
+    >
+      ToDoList
+    </h1>
     <form>
-      <div class="form-row">
-        <div class="col-md-4 mt-3 mb-3">
-          <!-- <label for="taskForm">Task</label> -->
-          <input type="text" class="form-control" id="taskForm" placeholder="Task" required>
+      <div 
+        class="form-row"
+      >
+        <div 
+          class="w-50 mx-auto mt-3 mb-3"
+        >
+          <input 
+            type="text" 
+            class="form-control" 
+            id="taskForm" 
+            placeholder="Task" 
+            required>
         </div>
       </div>
       <button 
@@ -19,22 +35,25 @@
       </button>  
     </form>
     <div>
-      <div v-for="(value, index) in arrTasks"
-          :key="index"
+      <div 
+        v-for="(value, index) in arrTasks"
+        :key="index"
       >
-        <p> {{ value.messageTask }} </p>
+        <TaskBlock 
+          :messageTask="value.messageTask"
+        />
       </div>
     </div>    
   </div>
 </template>
 
 <script>
-//import HelloWorld from './components/HelloWorld.vue'
+  import TaskBlock from './components/TaskBlock.vue'
 
 export default {
   name: 'app',
   components: {
-    // HelloWorld
+    TaskBlock
   },
   
   data() {
@@ -71,6 +90,7 @@ export default {
     background: url(assets/background.jpg) no-repeat center top / cover  
 
   #app
+    text-align: center
     border: 1px solid red
 
   h1
