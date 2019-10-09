@@ -63,7 +63,8 @@ export default {
       taskFormRef: null,
       arrTasks: [],
       messageTaskFromChild: '',
-      numberTask: undefined
+      numberTask: undefined,
+      indexOfChangeTask: undefined
     }
   },
   
@@ -72,25 +73,32 @@ export default {
     this.$on('clickBtnForParent', obj => {
       this.messageTaskFromChild = obj.messageTask;
       if(obj.btnClick == 'change') {
-       
+        this.taskFormRef.value = this.messageTaskFromChild;
+        this.indexOfChangeTask = obj.numberTask;
+        console.log(this.indexOfChangeTask);
         return; 
       }
       this.arrTasks.forEach((item, index, arr) => {
-        console.log(item);
-        if(item[numberTask] == obj[numberTask]) arr.splice(index+1,1);
+        if(item.numberTask == obj.numberTask) arr.splice(index,1);
       });
     });
   },  
   
   methods: {
-    addTask() {
-      if(this.taskFormRef.value) {
+    addTask(e) {
+      if(this.taskFormRef.value && this.indexOfChangeTask) {
+        this.arrTasks[this.indexOfChangeTask].messageTask = this.taskFormRef.value;
+        console.log(this.arrTasks[this.indexOfChangeTask].messageTask);
+        //this.indexOfChangeTask = undefined;    
+      }
+      else if (this.taskFormRef.value) {
         this.arrTasks.push({});
         this.arrTasks[this.arrTasks.length - 1].messageTask = this.taskFormRef.value;
         this.arrTasks[this.arrTasks.length - 1].numberTask = this.arrTasks.length - 1;
-        //console.log(this.arrTasks[this.arrTasks.length - 1].numberTask);
-        this.taskFormRef.value = '';  
+        //console.log(this.arrTasks[this.arrTasks.length - 1].numberTask);  
       }
+      this.taskFormRef.value = '';
+      e.preventDefault();
     }
   }
 
