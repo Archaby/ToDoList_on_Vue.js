@@ -1,40 +1,68 @@
 <template>
   <div 
-    class="block w-100 mx-auto d-flex mt-5 mb-3"
+    class="main mx-auto d-flex-row mt-5 mb-3"
   >
-    <!-- <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="gridCheck1">
-    </div> -->
     <div
-        class="d-flex"
+        class="info d-flex justify-content-between"
     >
-        <input class="form-check-input" type="checkbox" id="gridCheck1">
-        <p> 
-            {{ messageTask }} 
-        </p>    
+        <div
+            class="w-50 d-flex justify-content-between ml-2 align-items-center"
+        >
+            <input 
+                type="checkbox"
+                v-model="checked" 
+            >
+            <div
+                class="message"  
+                :style="checked ? 'text-decoration: line-through' : 'text-decoration: none'"
+            > 
+                {{ messageTask }}     
+            </div>           
+        </div>
+        <div
+            class="w-25 d-flex justify-content-around mb-2 mt-2"    
+        >   
+            <div    
+            >
+                <img 
+                    title="Change"
+                    alt="Exchange icon" 
+                    src="../assets/change.png"
+                    @click="btnChange"
+                >
+            </div>
+            <div>    
+                <img 
+                    title="Delete"
+                    alt="Trash icon" 
+                    src="../assets/delete.png"
+                    @click="btnDelete"
+                >
+            </div>        
+        </div>
     </div>
     <div
-        class="d-flex"    
-    >   
-        <div>
-            <button 
-                type="button" 
-                class="btn btn-warning"
-                @click="btnChange"
+        class="d-flex justify-content-around align-items-center mt-3 mb-3"
+        v-if="isForChangeDiv"
+    >
+        <input 
+            type="text" 
+            class="newInputTask form-control w-75" 
+            id="taskForm" 
+            :placeholder="messageTask"
+            maxlength="12" 
+            required
+        >
+        <img 
+            title="Apply"
+            alt="Apply icon" 
+            src="../assets/done.png"
+            @click="btnApply"
+            width="32px"
+            height="32px"
             >
-                    To change
-            </button>
-        </div>
-        <div>    
-            <button 
-                type="button" 
-                class="btn btn-danger"
-                @click="btnRemove"
-            >
-                    Remove
-            </button>
-        </div>        
-    </div>      
+
+    </div>
   </div>
 </template>
 
@@ -51,56 +79,62 @@ export default {
       type: Number,
       default: undefined,  
     }
-    // btnClick: {
-    //   type: String,
-    //   default: '',
-    // }
   },
   
   data() {
     return {
-      btnClick: ''
-      //taskFormRef: null,
-      //arrTasks: []
+      btnClick: '',
+      checked: false,
+      isForChangeDiv: false,
+      newInputTask: null,
     }
   },
   
   mounted() {
-    //this.taskFormRef = document.querySelector('#taskForm');
   },  
   
   methods: {
       
       btnChange() {
-        this.btnClick = 'change';
-        this.whitchBtnClick();    
+        this.isForChangeDiv = true; 
       },
 
-      btnRemove() {
-        this.btnClick = 'remove';
-        this.whitchBtnClick();
-        console.log(this.numberTask);    
+      btnDelete() {
+         this.$parent.$emit('clickDelForParent', {
+            numberTask: this.numberTask
+        });    
       },
 
-      whitchBtnClick() {
-        this.$parent.$emit('clickBtnForParent', {
-            btnClick: this.btnClick,
-            messageTask: this.messageTask,
+      btnApply() {
+        this.newInputTask = document.querySelector('.newInputTask');  
+        if(this.newInputTask.value) {
+            this.$parent.$emit('changeMesForParent', {
+            messageTask: this.newInputTask.value,
             numberTask: this.numberTask
         });
+        }
+        this.isForChangeDiv = false;    
       }
-
   }
 
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
     
-    .block
+    .main
         border-radius: 5px
+        border: 2px solid white
 
-    p 
-        color: white 
+    .info
+        border-bottom: 2px solid white    
+
+    .message 
+        width: 105px
+        color: white
+        text-align: left
+        
+    img[title="Delete"], img[title="Change"], img[title="Apply"]
+        cursor: pointer    
 
 </style>

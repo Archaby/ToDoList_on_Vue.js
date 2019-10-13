@@ -11,7 +11,8 @@
     >
       ToDoList
     </h1>
-    <form>
+    <form 
+      @submit.prevent>
       <div 
         class="form-row"
       >
@@ -23,7 +24,7 @@
             class="form-control" 
             id="taskForm" 
             placeholder="task"
-            maxlength="20" 
+            maxlength="12" 
             required>
         </div>
       </div>
@@ -62,22 +63,17 @@ export default {
     return {
       taskFormRef: null,
       arrTasks: [],
-      messageTaskFromChild: '',
       numberTask: undefined,
-      indexOfChangeTask: undefined
     }
   },
   
   mounted() {
     this.taskFormRef = document.querySelector('#taskForm');
-    this.$on('clickBtnForParent', obj => {
-      this.messageTaskFromChild = obj.messageTask;
-      if(obj.btnClick == 'change') {
-        this.taskFormRef.value = this.messageTaskFromChild;
-        this.indexOfChangeTask = obj.numberTask;
-        console.log(this.indexOfChangeTask);
-        return; 
-      }
+    this.$on('changeMesForParent', obj => {
+      this.arrTasks[obj.numberTask].messageTask = obj.messageTask;
+      console.log(this.arrTasks[obj.numberTask].messageTask, this.arrTasks);
+    });
+    this.$on('clickDelForParent', obj => {
       this.arrTasks.forEach((item, index, arr) => {
         if(item.numberTask == obj.numberTask) arr.splice(index,1);
       });
@@ -85,21 +81,14 @@ export default {
   },  
   
   methods: {
-    addTask(e) {
-      if(this.taskFormRef.value && this.indexOfChangeTask) {
-        this.arrTasks[this.indexOfChangeTask].messageTask = this.taskFormRef.value;
-        console.log(this.arrTasks[this.indexOfChangeTask].messageTask);
-        //this.indexOfChangeTask = undefined;    
-      }
-      else if (this.taskFormRef.value) {
+    addTask() {
+      if(this.taskFormRef.value) {
         this.arrTasks.push({});
         this.arrTasks[this.arrTasks.length - 1].messageTask = this.taskFormRef.value;
         this.arrTasks[this.arrTasks.length - 1].numberTask = this.arrTasks.length - 1;
-        //console.log(this.arrTasks[this.arrTasks.length - 1].numberTask);  
+        this.taskFormRef.value = '';
       }
-      this.taskFormRef.value = '';
-      e.preventDefault();
-    }
+    },
   }
 
 }
@@ -112,12 +101,14 @@ export default {
     box-sizing: border-box
 
   body
-    background: url(assets/background.jpg) no-repeat center top / cover  
+    background: url(assets/background.jpg) no-repeat center top / cover
+    height: 100vh  
 
   #app
     text-align: center
 
   h1
     color: white
-    text-align: center  
+    text-align: center 
+     
 </style>
