@@ -1,9 +1,10 @@
 <template>
   <div 
-    class="main mx-auto d-flex-row mt-5 mb-3"
+    class="main col-12 mx-auto d-flex-row mt-5 mb-3"
   >
     <div
         class="info d-flex justify-content-between"
+        :style="isBorderBottom ? 'border-bottom: 1px solid white' : 'border-bottom: none'"
     >
         <div
             class="w-50 d-flex justify-content-between ml-2 align-items-center"
@@ -87,16 +88,15 @@ export default {
       checked: false,
       isForChangeDiv: false,
       newInputTask: null,
+      isBorderBottom: false
     }
   },
-  
-  mounted() {
-  },  
   
   methods: {
       
       btnChange() {
-        this.isForChangeDiv = true; 
+        this.isForChangeDiv = !this.isForChangeDiv;
+        this.isBorderBottom = !this.isBorderBottom;
       },
 
       btnDelete() {
@@ -113,7 +113,8 @@ export default {
             numberTask: this.numberTask
         });
         }
-        this.isForChangeDiv = false;    
+        this.isForChangeDiv = false;
+        this.isBorderBottom = false;    
       }
   }
 
@@ -125,9 +126,6 @@ export default {
     .main
         border-radius: 5px
         border: 2px solid white
-
-    .info
-        border-bottom: 2px solid white    
 
     .message 
         width: 105px

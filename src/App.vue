@@ -17,7 +17,7 @@
         class="form-row"
       >
         <div 
-          class="w-50 mx-auto mt-3 mb-3"
+          class="col-9 col-sm-8 col-md-8 col-lg-6 col-xl-4 mx-auto mt-3 mb-3"
         >
           <input 
             type="text" 
@@ -36,7 +36,7 @@
         Add task
       </button>  
     </form>
-    <div class="w-50 mx-auto">
+    <div class="col-10 col-sm-9 col-md-8 col-lg-6 col-xl-4 mx-auto">
       <div 
         v-for="(value, index) in arrTasks"
         :key="index"
@@ -71,14 +71,14 @@ export default {
     this.taskFormRef = document.querySelector('#taskForm');
     this.$on('changeMesForParent', obj => {
       this.arrTasks[obj.numberTask].messageTask = obj.messageTask;
-      console.log(this.arrTasks[obj.numberTask].messageTask, this.arrTasks);
+      this.$forceUpdate();
     });
     this.$on('clickDelForParent', obj => {
       this.arrTasks.forEach((item, index, arr) => {
         if(item.numberTask == obj.numberTask) arr.splice(index,1);
       });
     });
-  },  
+  },
   
   methods: {
     addTask() {
@@ -102,7 +102,8 @@ export default {
 
   body
     background: url(assets/background.jpg) no-repeat center top / cover
-    height: 100vh  
+    background-attachment: fixed
+    height: 100vh
 
   #app
     text-align: center
